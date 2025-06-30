@@ -21,11 +21,32 @@ async function addTask(req, res) {
 }
 
 async function toggleTask(req, res) {
-  // TODO
+  try {
+    const task = await Task.findById(req.params.id);
+    if (!task) return res.status(404).send("Task Not Found");
+    const updatedTask = await Task.findByIdAndUpdate(
+      req.params.id,
+      { $set: { done: !task.done } },
+      { new: true }
+    );
+    res.status(200).send(updatedTask);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Error, could not update task");
+  }
 }
 
 async function deleteTask(req, res) {
-  // TODO
+  try {
+    const task = await Task.findByIdAndDelete(req.params.id);
+    if (!task) {
+      return res.status(404).send("Task Not Found");
+    }
+    res.status(200).send("Deleted Successfully");
+  } catch (error) {
+    console.log(error);
+    res.status(500).send("Error Deleting Task");
+  }
 }
 
 module.exports = {

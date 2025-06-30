@@ -1,10 +1,12 @@
+API_PATH = "http://localhost:3000/api/tasks/";
+
 document.addEventListener("DOMContentLoaded", () => {
   const taskForm = document.getElementById("task-form");
   const taskInput = document.getElementById("task-input");
   const taskList = document.getElementById("task-list");
 
   const loadTasks = async () => {
-    const res = await fetch("/api/tasks");
+    const res = await fetch(API_PATH);
     const tasks = await res.json();
     taskList.innerHTML = "";
     tasks.forEach(task => {
@@ -24,7 +26,7 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   const addTask = async (title) => {
-    await fetch("/api/tasks", {
+    await fetch(API_PATH, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ title }),
@@ -33,12 +35,12 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   const toggleTask = async (id) => {
-    await fetch("/api/tasks/" + id, { method: "PATCH" });
+    await fetch(API_PATH + id, { method: "PATCH" });
     loadTasks();
   };
 
   const deleteTask = async (id) => {
-    await fetch("/api/tasks/" + id, { method: "DELETE" });
+    await fetch(API_PATH + id, { method: "DELETE" });
     loadTasks();
   };
 
